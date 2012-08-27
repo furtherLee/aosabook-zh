@@ -81,3 +81,9 @@ Moodle在这里采用PHP标准方法。浏览一个课程的主页时，URL可�
 示例插件
 ------
 
+我会以一个具体的插件实例来解释Moodle架构中的大量细节。作为惯例，我选择实现一个显示"Hello world"的插件。
+
+这个插件实际上并不适合任何一种Moodle标准插件。它只是一个简单的脚本，和其他任何东西都没有联系，所以我选择把它制作成一个'local'类型的插件。这是一个catch-all的插件类型，专门处理一些杂乱的功能，所以在这里再适合不过了。我给我的插件命名为`greet`,所以它的Frankenstyle的名字是`local_greet`，路径为`local/greet`。（[插件代码](https://github.com/timhunt/moodle-local_greet)下载）
+
+
+
