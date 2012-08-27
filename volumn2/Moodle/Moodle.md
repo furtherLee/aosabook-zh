@@ -85,5 +85,51 @@ Moodle在这里采用PHP标准方法。浏览一个课程的主页时，URL可�
 
 这个插件实际上并不适合任何一种Moodle标准插件。它只是一个简单的脚本，和其他任何东西都没有联系，所以我选择把它制作成一个'local'类型的插件。这是一个catch-all的插件类型，专门处理一些杂乱的功能，所以在这里再适合不过了。我给我的插件命名为`greet`,所以它的Frankenstyle的名字是`local_greet`，路径为`local/greet`。（[插件代码](https://github.com/timhunt/moodle-local_greet)下载）
 
+每一个插件都必需包含一个叫做`version.php`的文件，这个文件定义了关于这个插件本身的元数据。Moodle的插件安装系统会使用它来对插件进行安装和升级。例如`local/greet/version.php`包含代码：
 
+    <?php
+    $plugin->component    = 'local_greet';
+    $plugin->version      = 2011102900;
+    $plugin->requires     = 2011102700;
+    $plugin->maturity     = MATURITY_STABLE;	
+
+因为可以从路径上显然地推到出插件的名字，所以乍看之下代码里面包含组件名（component name）略显多余。而实际上，安装器通过组件名来验证插件是否安装在正确的位置上。版本（Version）字段定义了这个插件的版本，成熟度(Maturity）是诸如ALPHA，BETA，RC（发布候选版, release candidate）, 或者STABLE这样的标签。Requires字段标识着能和这个版本兼容的Moodle最低版本号。如果需要，你也需要记录下这个插件依赖的其他插件。
+
+这里是这个简单插件的主要脚本（存储在`local/greet/index.php`）：
+
+    <?php
+    require_once(dirname(__FILE__) . '/../../config.php');        // 1
+    
+    require_login();                                              // 2
+    $context = context_system::instance();                        // 3
+    require_capability('local/greet:begreeted', $context);        // 4
+    
+    $name = optional_param('name', '', PARAM_TEXT);               // 5
+    if (!$name) {
+        $name = fullname($USER);                                  // 6
+    }
+    
+    add_to_log(SITEID, 'local_greet', 'begreeted',
+        'local/greet/index.php?name=' . urlencode($name));        // 7
+    
+    $PAGE->set_context($context);                                 // 8
+    $PAGE->set_url(new moodle_url('/local/greet/index.php'),
+        array('name' => $name));                                  // 9
+    $PAGE->set_title(get_string('welcome', 'local_greet'));       // 10
+    
+    echo $OUTPUT->header();                                       // 11
+    echo $OUTPUT->box(get_string('greet', 'local_greet',
+        format_string($name)));                                   // 12
+    echo $OUTPUT->footer();                                       // 13
+
+// 1 引导Moodle
+-----------------
+    require_once(dirname(__FILE__) . '/../../config.php');        // 1
+
+这单独的一行是大多数工作都要首先完成的。我之前说过，`config.php`包含着Moodle如何连接数据库以及找到`metadata`目录的细节。然而，它以一行`require_once('lib/setup.php')`结束。这样：
+
+1. 通过`require_once`加载所有Moodle标准库；  
+2. 开始处理会话；  
+3. 连接数据库；  
+4. 初始化一系列全局变量，我们一会就将看到它们。
 
