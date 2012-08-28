@@ -273,11 +273,29 @@ Line 8：全局变量$PAGE
 
 Line 9：Moodle URL
 ------------------
+    $PAGE->set_url(new moodle_url('/local/greet/index.php'),
+            array('name' => $name));                              // 9
 
 
 Line 10：国际化
 --------------
+    $PAGE->set_title(get_string('welcome', 'local_greet'));       // 10
 
+Moodle使用自己的系统来支持多语言。或许现在有许多的PHP国际化库，但是在它第一次被实现的2002年当时，没有任何一个可用的库能够完成这个任务。整个系统基于`get_string`函数。字符串被一个键和插件的Frankenstyle名字唯一确定。就像你在第12行看到的，完全可以把值插入到字符串中。（多值在PHP中通过数组和对象来处理）
+
+字符串会在一个语言文件中被查找，这个语言文件里面其实就是一个PHP数组。这里有一个我们插件的语言文件`local/greet/lang/en/local_greet.php`：
+
+    <?php
+    $string['greet:begreeted'] = 'Be greeted by the hello world example';
+    $string['welcome'] = 'Welcome';
+    $string['greet'] = 'Hello, {$a}!';
+    $string['pluginname'] = 'Hello world example';
+
+注意到，除了两个我们脚本中用到的字符串，这里还给某个能力了一个名字，还有这个插件显示在用户界面上的名字。
+
+不同语言由两个字母的国家码唯一确定（这里的`en`）。语言包或许衍生于其他的语言包。比如说`fr_ca`（加拿大法语）语言包声明了`fr`（法语）作为它的母语言，所以要所搜包括它母语言包的所有语言包才能够找到这个字符串。
+
+语言包制作以及协同翻译在[http://lang.moodle.org]上管理，Moodle用它们制作了一个可定制插件（[local_amos](http://docs.moodle.org/22/en/AMOS)）。它使用Git和数据库作为存储语言文件的后端，保留了所有的历史版本。
 
 Line 11：开始输出
 ----------------
