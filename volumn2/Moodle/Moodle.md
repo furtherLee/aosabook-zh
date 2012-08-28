@@ -327,7 +327,27 @@ Line 13：结束输出
 
 这个脚本应该混杂逻辑和显示么？
 -------------------------
+很显然，把进行输出的代码直接写在`index.php`里面，即使这是一个高级的抽象，它也会限制主题对于输出更改的灵活性。这是另一个Moodle老旧code-base的现象。全局变量`$OUTPUT`在2010年的时候被引入，它当时是把设计理念从旧代码拯救出来的垫脚石。在之前所有处理输出和控制器的代码都写在同一个文件中，而它将其引入到视图代码被良好分离的美丽设计中去。这也解释了那个十分丑陋的渲染方法 —— 先把整个页面布局产生出来，再劈成两半，才使得脚本任何自己的输出能够正确地显示在页首和页脚之间。自从把视图代码从脚本中分离出来放到一个Moodle叫做渲染其的东西中后，主题就可一完全（或者部分）重写一个给定脚本的视图了。
 
+一个很小的重构就可以把所有在`index.php`中处理输出的代码抽出，转移到一个渲染器里面。那么在`index.php`的最后（11到13行）就变为：
+
+    $output = $PAGE->get_renderer('local_greet');
+    echo $output->greeting_page($name);
+
+然后，我们就有了一个新的文件`local/greet/renderer.php`：
+
+    <?php
+    class local_greet_renderer extends plugin_renderer_base {
+        public function greeting_page($name) {
+            $output = '';
+            $output .= $this->header();
+            $output .= $this->box(get_string('greet', 'local_greet', $name));
+            $output .= $this->footer();
+            return $output;
+        }
+    }
+
+如果一个主题想完全改变这个输出，它可以定义一个这个渲染器的子类，并且覆盖掉`greeting_page`这个方法。`$PAGE->get_renderer()`根据当前的主题来选择合适的渲染器类进行初始化。所以输出（视图）代码完全地被从在`index.php`的控制器代码中分理出来，这个插件也从典型的Moodle遗留代码被重构成干净的MVC结构。
 
 13.5. 数据库抽象
 ===============
