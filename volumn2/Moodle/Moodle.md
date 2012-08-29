@@ -115,7 +115,7 @@ Moodle在这里采用PHP标准方法。浏览一个课程的主页时，URL可�
 
 我会以一个具体的插件实例来解释Moodle架构中的大量细节。作为惯例，我选择实现一个显示"Hello world"的插件。
 
-这个插件实际上并不适合任何一种Moodle标准插件。它只是一个简单的脚本，和其他任何东西都没有联系，所以我选择把它制作成一个'local'类型的插件。这是一个catch-all的插件类型，专门处理一些杂乱的功能，所以在这里再适合不过了。我给我的插件命名为`greet`,所以它的Frankenstyle的名字是`local_greet`，路径为`local/greet`。（[插件代码](https://github.com/timhunt/moodle-local_greet)下载）
+这个插件实际上并不适合任何一种Moodle标准插件。它只是一个简单的脚本，和其他任何东西都没有联系，所以我选择把它制作成一个'local'类型的插件。这是一个catch-all的插件类型，专门处理一些杂乱的功能，所以在这里再适合不过了。我给我的插件命名为`greet`，所以它的Frankenstyle的名字是`local_greet`，路径为`local/greet`。（[插件代码](https://github.com/timhunt/moodle-local_greet)下载）
 
 每一个插件都必需包含一个叫做`version.php`的文件，这个文件定义了关于这个插件本身的元数据。Moodle的插件安装系统会使用它来对插件进行安装和升级。例如`local/greet/version.php`包含代码：
 
@@ -125,7 +125,7 @@ Moodle在这里采用PHP标准方法。浏览一个课程的主页时，URL可�
     $plugin->requires     = 2011102700;
     $plugin->maturity     = MATURITY_STABLE;	
 
-因为可以从路径上显然地推导出插件的名字，所以乍看之下代码里面包含组件名（component name）略显多余。而实际上，安装器需要通过组件名来验证插件是否安装在正确的位置上。版本（Version）字段定义了这个插件的版本，成熟度(Maturity）是诸如ALPHA，BETA，RC（发布候选版, release candidate）, 或者STABLE这样的标签。Requires字段标识着能和这个版本兼容的Moodle最低版本号。如果需要，你也可以记录下这个插件依赖的其他插件。
+因为可以从路径上显然地推导出插件的名字，所以乍看之下代码里面包含组件名（component name）略显多余。而实际上，安装器需要通过组件名来验证插件是否安装在正确的位置上。版本（Version）字段定义了这个插件的版本，成熟度(Maturity）是诸如ALPHA，BETA，RC（发布候选版, release candidate）, 或者STABLE这样的标签。Requires字段标识着能和这个版本兼容的Moodle最低版本号。必要的话，你也要记录下这个插件依赖的其他插件。
 
 这里是这个简单插件的主要脚本（存储在`local/greet/index.php`）：
 
