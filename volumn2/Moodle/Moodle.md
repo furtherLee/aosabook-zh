@@ -81,28 +81,28 @@ Moodle在这里采用PHP标准方法。浏览一个课程的主页时，URL可�
       <td>mod/forum</td>
    </tr>
    <tr>
-      <td>`mod (Activity module)`</td>
-      <td>`quiz`</td>
-      <td>`mod_quiz`</td>
-      <td>`mod/quiz`</td>
+      <td><code>mod (Activity module)</code></td>
+      <td><code>quiz</code></td>
+      <td><code>mod_quiz</code></td>
+      <td><code>mod/quiz</code></td>
    </tr>
    <tr>
-      <td>`block (Side-block)`</td>
-      <td>`navigation`</td>
-      <td>`block_navigation`</td>
-      <td>`blocks/navigation`</td>
+      <td><code>block (Side-block)</code></td>
+      <td><code>navigation</code></td>
+      <td><code>block_navigation</code></td>
+      <td><code>blocks/navigation</code></td>
    </tr>
    <tr>
-      <td>`qtype (Question type)`</td>
-      <td>`shortanswer`</td>
-      <td>`qtype_shortanswer`</td>
-      <td>`question/type/shortanswer`</td>
+      <td><code>qtype (Question type)</code></td>
+      <td><code>shortanswer</code></td>
+      <td><code>qtype_shortanswer</code></td>
+      <td><code>question/type/shortanswer</code></td>
    </tr>
    <tr>
-      <td>`quiz (Quiz report)`</td>
-      <td>`statistics`</td>
-      <td>`quiz_statistics`</td>
-      <td>`mod/quiz/report/statistics`</td>
+      <td><code>quiz (Quiz report)</code></td>
+      <td><code>statistics</code></td>
+      <td><code>quiz_statistics</code></td>
+      <td><code>mod/quiz/report/statistics</code></td>
    </tr>
 </table>
 
