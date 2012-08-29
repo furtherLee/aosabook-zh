@@ -61,13 +61,13 @@ Moodle在这里采用PHP标准方法。浏览一个课程的主页时，URL可�
 ----
 和许多其它成功的开源项目一样，Moodle由许多和系统内核协同工作的插件构建起来。这是一个绝妙的主意，因为它可以使用户按照他们定制的方法来增强Moodle的功能。一个开源系统的重要优势在于，你可以根据自己的特定需求来更改它。然而，为代码增加高可定制性的同时，会在系统升级的时候引入大麻烦，即使我们已经采用了很好的版本控制系统。Moodle的插件通过定义好的API与内核交互，所以在自包含的插件中，可以允许尽可能多的用户定制与新特性被开发出来。这也方便了用户根据需求定制自己的Moodle，分享这些定制内容，同时也便于对Moodle系统内核进行升级。
 
-有许多不同的方法可以将一个系统构建成插件化的。Moodle具有一个相对庞大的内核，并且插件是强类型的。我所说的相对庞大的内核，指的是内核提供了大量的功能。这违反了那类，由一个小型的插件启动存根(stub)引导，其余都是插件的架构设计。
+有许多不同的方法可以将一个系统构建成插件化的。Moodle具有一个相对庞大的内核，并且插件是强类型的。我所说的相对庞大的内核，指的是内核提供了大量的功能。这违反了那类，由一个小型的插件启动器进行引导，其余部分都是插件的架构设计。
 
-当我提及插件是强类型的时候，我指的是根据你想要实现的具体功能，你可能需要写完全不同的插件，实现不同的API。比如，一个新的活动模块插件会和一个新的认证插件或者是提问插件截然不同。根据最后统计，现在我们一共有35种不同的插件（这里有一个[Moodle插件类型完全列表](http://docs.moodle.org/dev/Plugins/)）。这违背了那类，所有插件通过使用最基本的API，通过注册它们感兴趣的钩子和事件的架构设计。
+当我提及插件是强类型的时候，我指的是根据你想要实现的具体功能，你可能需要写完全不同的插件，实现不同的API。比如，一个新的活动模块插件会与一个新的认证插件，或者是提问插件截然不同。根据最后统计，现在我们一共有35种不同的插件（这里有一个[Moodle插件类型完全列表](http://docs.moodle.org/dev/Plugins/)）。这违背了那类，所有插件通过使用最基本的API，通过注册它们感兴趣的钩子和事件与内核进行交互的架构设计。
 
 通常来说，Moodle现在有尝试把更多的功能移到插件中以减小内核的趋势。可是这并没有带来巨大的成功，因为当前一个逐渐增长的特性集趋于去扩展内核。另一个趋势是尽可能将不同种类的插件进行规范化。这样在许多公共功能上，比如安装和升级，所有类型的插件都能够按照统一的方式运行。
 
-一个Moodle中的插件其实就是一个包含许多文件的目录。每一个插件都有一个类型和名字，这两个构成了这个插件的"Frankenstyle"组件名称。（"Frankenstyle"这个单词出自于开发者Jabber频道的一次讨论，所有的人都爱它，所以它就被固定下来了）插件的类型和名字确定了这个插件目录的路径。插件类型给定一个前缀，目录名称就是这个插件的名字。这里有一些例子：
+一个Moodle中的插件其实就是一个包含许多文件的目录。每一个插件都有一个类型和名字，这两个构成了这个插件的"Frankenstyle"组件名称。（"Frankenstyle"这个单词出自于开发者Jabber频道的一次讨论，人人都爱它，所以这个单词就被固定下来了）插件的类型和名字决定了这个插件目录的路径。插件类型给定一个前缀，目录名称就是这个插件的名字。这里有一些例子：
 
 <table class="table table-bordered table-striped table-condensed">
    <tr>
@@ -78,37 +78,37 @@ Moodle在这里采用PHP标准方法。浏览一个课程的主页时，URL可�
    </tr>
    <tr>
       <td>mod (Activity module)</td>
-      <td>forum</td>
-      <td>mod_forum</td>
-      <td>mod/forum</td>
+      <td><code>forum</code></td>
+      <td><code>mod_forum</code></td>
+      <td><code>mod/forum</code></td>
    </tr>
    <tr>
-      <td><code>mod (Activity module)</code></td>
+      <td><mod (Activity module)</td>
       <td><code>quiz</code></td>
       <td><code>mod_quiz</code></td>
       <td><code>mod/quiz</code></td>
    </tr>
    <tr>
-      <td><code>block (Side-block)</code></td>
+      <td>block (Side-block)</td>
       <td><code>navigation</code></td>
       <td><code>block_navigation</code></td>
       <td><code>blocks/navigation</code></td>
    </tr>
    <tr>
-      <td><code>qtype (Question type)</code></td>
+      <td>qtype (Question type)</td>
       <td><code>shortanswer</code></td>
       <td><code>qtype_shortanswer</code></td>
       <td><code>question/type/shortanswer</code></td>
    </tr>
    <tr>
-      <td><code>quiz (Quiz report)</code></td>
+      <td>quiz (Quiz report)</td>
       <td><code>statistics</code></td>
       <td><code>quiz_statistics</code></td>
       <td><code>mod/quiz/report/statistics</code></td>
    </tr>
 </table>
 
-最后的一个例子表明了每一个活动模块被允许声明子插件类型。只有活动模块才能做到这个，出于亮点原因。如果所有的插件都可以声明子插件类型，这或许会带来严重的性能问题。活动模块是Moodle中最重要的教育活动，也是插件中最终要的类型，所以它们应该具有特殊的权限。
+最后的一个例子表明了每一个活动模块被允许声明子插件类型。只有活动模块才能做到这个，出于两点原因。首先如果所有的插件都可以声明子插件类型，这或许会带来严重的性能问题。另外活动模块是Moodle中最重要的教育活动，也是插件中最重要的类型，所以它们应该具有特殊的权限。
 
 示例插件
 ------
