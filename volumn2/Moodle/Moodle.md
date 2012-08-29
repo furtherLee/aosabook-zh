@@ -83,7 +83,7 @@ Moodle在这里采用PHP标准方法。浏览一个课程的主页时，URL可�
       <td><code>mod/forum</code></td>
    </tr>
    <tr>
-      <td><mod (Activity module)</td>
+      <td>mod (Activity module)</td>
       <td><code>quiz</code></td>
       <td><code>mod_quiz</code></td>
       <td><code>mod/quiz</code></td>
