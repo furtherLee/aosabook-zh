@@ -67,13 +67,43 @@ Moodle在这里采用PHP标准方法。浏览一个课程的主页时，URL可�
 
 一个Moodle中的插件其实就是一个包含许多文件的目录。每一个插件都有一个类型和名字，这两个构成了这个插件的"Frankenstyle"组件名称。（"Frankenstyle"这个单词出自于开发者Jabber频道的一次讨论，所有的人都爱它，所以它就被固定下来了）插件的类型和名字确定了这个插件目录的路径。插件类型给定一个前缀，目录名称就是这个插件的名字。这里有一些例子：
 
-<table class="table table-condensed table-bordered table-striped">
-<tr><td><strong>Plugin type</strong></td><td><strong>Plugin name</strong></td><td><strong>Frankenstyle</strong></td><td><strong>Folder</strong></td></tr>
-<tr><td>mod (Activity module)</td><td><code>forum</code></td><td><code>mod_forum</code></td><td><code>mod/forum</code></td></tr>
-<tr><td>mod (Activity module)</td><td><code>quiz</code></td><td><code>mod_quiz</code></td><td><code>mod/quiz</code></td></tr>
-<tr><td>block (Side-block)</td><td><code>navigation</code></td><td><code>block_navigation</code></td><td><code>blocks/navigation</code></td></tr>
-<tr><td>qtype (Question type)</td><td><code>shortanswer</code></td><td><code>qtype_shortanswer</code></td><td><code>question/type</code>/shortanswer</td></tr>
-<tr><td>quiz (Quiz report)</td><td><code>statistics</code></td><td><code>quiz_statistics</code></td><td><code>mod/quiz/report/statistics</code></td></tr>
+<table class="table table-bordered table-striped table-condensed">
+   <tr>
+      <th>插件类型</th>
+      <th>插件名称</th>
+      <th>Frankenstyle</th>
+      <th>目录</th>
+   </tr>
+   <tr>
+      <td>mod (Activity module)</td>
+      <td>forum</td>
+      <td>mod_forum</td>
+      <td>mod/forum</td>
+   </tr>
+   <tr>
+      <td>`mod (Activity module)`</td>
+      <td>`quiz`</td>
+      <td>`mod_quiz`</td>
+      <td>`mod/quiz`</td>
+   </tr>
+   <tr>
+      <td>`block (Side-block)`</td>
+      <td>`navigation`</td>
+      <td>`block_navigation`</td>
+      <td>`blocks/navigation`</td>
+   </tr>
+   <tr>
+      <td>`qtype (Question type)`</td>
+      <td>`shortanswer`</td>
+      <td>`qtype_shortanswer`</td>
+      <td>`question/type/shortanswer`</td>
+   </tr>
+   <tr>
+      <td>`quiz (Quiz report)`</td>
+      <td>`statistics`</td>
+      <td>`quiz_statistics`</td>
+      <td>`mod/quiz/report/statistics`</td>
+   </tr>
 </table>
 
 最后的一个例子表明了每一个活动模块被允许声明子插件类型。只有活动模块才能做到这个，出于亮点原因。如果所有的插件都可以声明子插件类型，这或许会带来严重的性能问题。活动模块是Moodle中最重要的教育活动，也是插件中最终要的类型，所以它们应该具有特殊的权限。
